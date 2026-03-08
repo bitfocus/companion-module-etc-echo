@@ -1,13 +1,13 @@
-const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@companion-module/base')
+import { InstanceBase, Regex, InstanceStatus } from '@companion-module/base'
 const UpgradeScripts = require('./src/upgrades')
 const UpdateActions = require('./src/actions')
 const UpdateFeedbacks = require('./src/feedbacks')
-const UpdateVariableDefinitions = require('./src/variables')
+import { setVariables } from './src/variables'
 const UpdatePresetDefinitions = require('./src/presets')
 const dgram = require('dgram')
 const { networkInterfaces } = require('os')
 
-class ModuleInstance extends InstanceBase {
+export default class ModuleInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 
@@ -44,7 +44,7 @@ class ModuleInstance extends InstanceBase {
 
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
-		this.updateVariableDefinitions() // export variable definitions
+		setVariables() // export variable definitions
 		this.updatePresetDefinitions()
 	}
 
@@ -202,7 +202,7 @@ class ModuleInstance extends InstanceBase {
 				value:
 					'This module is configured to only control one Echo "Space" at a time, ' +
 					'due to the sheer number of parameters required to track all 16 available ' +
-					'spaces. The ability to receive feedbacks from multiple modules in parallel does not currently work.'
+					'spaces. The ability to receive feedbacks from multiple modules in parallel does not currently work.',
 			},
 			{
 				type: 'textinput',
@@ -278,5 +278,3 @@ class ModuleInstance extends InstanceBase {
 		UpdatePresetDefinitions(this)
 	}
 }
-
-runEntrypoint(ModuleInstance, UpgradeScripts)
