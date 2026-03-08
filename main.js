@@ -5,7 +5,7 @@ import { UpdateFeedbacks } from './src/feedbacks'
 import { setVariables } from './src/variables'
 import { UpdatePresetDefinitions } from './src/presets'
 import { dgram } from 'dgram'
-import { networkInterfaces } from 'os'
+import { getNetworkInterfaces } from './src/lib/utilities'
 
 export default class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -16,21 +16,6 @@ export default class ModuleInstance extends InstanceBase {
 			spaceOff: true,
 			activePreset: 0,
 			activeSequence: 0,
-		}
-
-		this.getIPs = () => {
-			// Get IP addresses of device Companion is running on
-			this.nets = networkInterfaces()
-			this.interfaces = []
-
-			for (const n of Object.keys(this.nets)) {
-				for (const net of this.nets[n]) {
-					if (net.family == 'IPv4' && !net.internal) {
-						this.interfaces.push({ id: net.address, label: n + ' - ' + net.address })
-					}
-				}
-			}
-			return this.interfaces
 		}
 	}
 
@@ -192,7 +177,7 @@ export default class ModuleInstance extends InstanceBase {
 
 	// Return config fields for web config
 	getConfigFields() {
-		this.interfaceList = this.getIPs()
+		this.interfaceList = getNetworkInterfaces()
 		return [
 			{
 				type: 'static-text',
