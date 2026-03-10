@@ -1,4 +1,4 @@
-export function UpdateActions (self) {
+module.exports = function (self) {
 	const sendUDP = async (msg) => {
 		// Format and send UDP message to server
 		const sendBuf = Buffer.from(msg, 'latin1')
@@ -13,7 +13,7 @@ export function UpdateActions (self) {
 	// Create dropdown for zone selection
 	this.ZoneNames = []
 	for (let i = 1; i <= 16; i++) {
-		this.ZoneNames[i - 1] = { id: i, label: `Zone ${i}` }
+		this.ZoneNames[i-1] = { id: i, label: `Zone ${i}` }
 	}
 
 	self.setActionDefinitions({

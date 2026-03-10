@@ -1,6 +1,7 @@
-import { combineRgb } from '@companion-module/base'
+const { combineRgb } = require('@companion-module/base')
+const feedbacks = require('./feedbacks')
 
-export function UpdatePresetDefinitions (self) {
+module.exports = function (self) {
 	const presets = {}
 
 	presets[`preset_off`] = {

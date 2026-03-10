@@ -1,11 +1,11 @@
 import { InstanceBase, Regex, InstanceStatus } from '@companion-module/base'
-// const UpgradeScripts = require('./src/upgrades')
-import { UpdateActions } from './src/actions'
-import { UpdateFeedbacks } from './src/feedbacks'
+const UpgradeScripts = require('./src/upgrades')
+const UpdateActions = require('./src/actions')
+const UpdateFeedbacks = require('./src/feedbacks')
 import { setVariables } from './src/variables'
-import { UpdatePresetDefinitions } from './src/presets'
-import { dgram } from 'dgram'
-import { networkInterfaces } from 'os'
+const UpdatePresetDefinitions = require('./src/presets')
+const dgram = require('dgram')
+const { networkInterfaces } = require('os')
 
 export default class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -271,7 +271,7 @@ export default class ModuleInstance extends InstanceBase {
 	}
 
 	updateVariableDefinitions() {
-		setVariables(this)
+		UpdateVariableDefinitions(this)
 	}
 
 	updatePresetDefinitions() {

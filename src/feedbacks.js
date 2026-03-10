@@ -1,6 +1,6 @@
-import { combineRgb } from '@companion-module/base'
+const { combineRgb } = require('@companion-module/base')
 
-export async function UpdateFeedbacks (self) {
+module.exports = async function (self) {
 	self.setFeedbackDefinitions({
 		ActivePreset: {
 			name: 'Active Preset',
