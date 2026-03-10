@@ -4,7 +4,6 @@
 	"shortname": "etc-echo",
 	"description": "Allows for control of ETC's Echo building lighting control system.",
 	"version": "1.0.0",
-	"type": "connection",
 	"license": "MIT",
 	"repository": "git+https://github.com/zklosko/companion-module-etc-echo.git",
 	"bugs": "https://github.com/zklosko/companion-module-etc-echo/issues",
