@@ -1,5 +1,3 @@
-import { createZoneNames } from "./lib/utilities"
-
 export function UpdateActions (self) {
 	const sendUDP = async (msg) => {
 		// Format and send UDP message to server
@@ -13,7 +11,10 @@ export function UpdateActions (self) {
 	}
 
 	// Create dropdown for zone selection
-	this.ZoneNames = createZoneNames()
+	this.ZoneNames = []
+	for (let i = 1; i <= 16; i++) {
+		this.ZoneNames[i - 1] = { id: i, label: `Zone ${i}` }
+	}
 
 	self.setActionDefinitions({
 		set_preset: {
