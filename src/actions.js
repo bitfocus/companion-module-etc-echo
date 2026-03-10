@@ -1,6 +1,4 @@
-import { createZoneNames } from "./lib/utilities.js"
-
-const ZoneNames = createZoneNames()
+import { createZoneNames } from "./lib/utilities"
 
 export function UpdateActions (self) {
 	const sendUDP = async (msg) => {
@@ -14,7 +12,8 @@ export function UpdateActions (self) {
 		}
 	}
 
-	console.log('ZoneNames for actions:', ZoneNames)
+	// Create dropdown for zone selection
+	this.ZoneNames = createZoneNames()
 
 	self.setActionDefinitions({
 		set_preset: {
@@ -103,8 +102,8 @@ export function UpdateActions (self) {
 					id: 'zone',
 					type: 'dropdown',
 					label: 'Zone Number',
-					choices: ZoneNames,
-					default: ZoneNames[0].id,
+					choices: this.ZoneNames,
+					default: this.ZoneNames[0].id,
 				},
 				{
 					id: 'int',
