@@ -1,4 +1,4 @@
-const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@companion-module/base')
+const { InstanceBase, Regex, InstanceStatus } = require('@companion-module/base')
 const UpgradeScripts = require('./src/upgrades')
 const UpdateActions = require('./src/actions')
 const UpdateFeedbacks = require('./src/feedbacks')
@@ -7,7 +7,7 @@ const UpdatePresetDefinitions = require('./src/presets')
 const dgram = require('dgram')
 const { networkInterfaces } = require('os')
 
-class ModuleInstance extends InstanceBase {
+module.exports = class ModuleInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 
@@ -279,4 +279,5 @@ class ModuleInstance extends InstanceBase {
 	}
 }
 
-runEntrypoint(ModuleInstance, UpgradeScripts)
+// runEntrypoint(ModuleInstance, UpgradeScripts)
+module.exports.UpgradeScripts = UpgradeScripts
