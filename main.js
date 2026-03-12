@@ -1,11 +1,11 @@
-import { InstanceBase, Regex, InstanceStatus } from '@companion-module/base'
+import { InstanceBase, InstanceStatus } from '@companion-module/base'
+import { configFields } from './src/config.js'
 import { upgradeScripts } from './src/upgrades.js'
 import { UpdateActions } from './src/actions.js'
 import { UpdateFeedbacks } from './src/feedbacks.js'
 import { UpdateVariableDefinitions } from './src/variables.js'
 import { UpdatePresetDefinitions } from './src/presets.js'
 import dgram from 'node:dgram'
-import { networkInterfaces } from 'node:os'
 
 export default class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -16,21 +16,6 @@ export default class ModuleInstance extends InstanceBase {
 			spaceOff: true,
 			activePreset: 0,
 			activeSequence: 0,
-		}
-
-		this.getIPs = () => {
-			// Get IP addresses of device Companion is running on
-			this.nets = networkInterfaces()
-			this.interfaces = []
-
-			for (const n of Object.keys(this.nets)) {
-				for (const net of this.nets[n]) {
-					if (net.family == 'IPv4' && !net.internal) {
-						this.interfaces.push({ id: net.address, label: n + ' - ' + net.address })
-					}
-				}
-			}
-			return this.interfaces
 		}
 	}
 
@@ -192,74 +177,7 @@ export default class ModuleInstance extends InstanceBase {
 
 	// Return config fields for web config
 	getConfigFields() {
-		this.interfaceList = this.getIPs()
-		return [
-			{
-				type: 'static-text',
-				id: 'info',
-				width: 12,
-				label: 'Information',
-				value:
-					'This module is configured to only control one Echo "Space" at a time, ' +
-					'due to the sheer number of parameters required to track all 16 available ' +
-					'spaces. The ability to receive feedbacks from multiple modules in parallel does not currently work.'
-			},
-			{
-				type: 'textinput',
-				id: 'host',
-				label: 'Target IP',
-				width: 6,
-				regex: Regex.IP,
-				required: true,
-			},
-			{
-				type: 'dropdown',
-				id: 'selfIP',
-				label: 'Network Interface',
-				tooltip: 'Select the network interface used for connecting to Echo. This will be used to collect feedbacks.',
-				choices: this.interfaceList,
-				default: this.interfaceList[0].id,
-				width: 6,
-				required: true,
-			},
-			{
-				type: 'textinput',
-				id: 'port',
-				label: 'Send Port',
-				default: '4703',
-				tooltip: 'Default port is 4703',
-				width: 6,
-				regex: Regex.PORT,
-				required: true,
-			},
-			{
-				type: 'textinput',
-				id: 'serverport',
-				label: 'Listen Port',
-				default: '4703',
-				width: 6,
-				regex: Regex.PORT,
-				required: true,
-			},
-			{
-				type: 'textinput',
-				id: 'space',
-				label: 'Echo Space',
-				default: '1',
-				width: 6,
-				regex: Regex.NUMBER,
-				required: true,
-			},
-			{
-				type: 'textinput',
-				id: 'fadetime',
-				label: 'Default Fade Time',
-				default: '2',
-				width: 6,
-				regex: Regex.FLOAT,
-				required: true,
-			},
-		]
+		return configFields
 	}
 
 	updateActions() {
