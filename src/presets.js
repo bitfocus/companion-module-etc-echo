@@ -1,6 +1,6 @@
-const { combineRgb } = require('@companion-module/base')
+import { combineRgb } from '@companion-module/base'
 
-module.exports = function (self) {
+export function UpdatePresetDefinitions(self) {
 	const presets = {
 		off: {
 			name: 'Space Off',

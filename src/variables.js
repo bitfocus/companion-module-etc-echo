@@ -1,4 +1,4 @@
-module.exports = function (self) {
+export function UpdateVariableDefinitions(self) {
 	self.setVariableDefinitions({
 		z1_int: { name: 'Zone 1 Intensity' },
 		z2_int: { name: 'Zone 2 Intensity' },

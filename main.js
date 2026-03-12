@@ -1,13 +1,13 @@
-const { InstanceBase, Regex, InstanceStatus } = require('@companion-module/base')
-const UpgradeScripts = require('./src/upgrades')
-const UpdateActions = require('./src/actions')
-const UpdateFeedbacks = require('./src/feedbacks')
-const UpdateVariableDefinitions = require('./src/variables')
-const UpdatePresetDefinitions = require('./src/presets')
-const dgram = require('dgram')
-const { networkInterfaces } = require('os')
+import { InstanceBase, Regex, InstanceStatus } from '@companion-module/base'
+import { upgradeScripts } from './src/upgrades.js'
+import { UpdateActions } from './src/actions.js'
+import { UpdateFeedbacks } from './src/feedbacks.js'
+import { UpdateVariableDefinitions } from './src/variables.js'
+import { UpdatePresetDefinitions } from './src/presets.js'
+import dgram from 'node:dgram'
+import { networkInterfaces } from 'node:os'
 
-module.exports = class ModuleInstance extends InstanceBase {
+export default class ModuleInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 
@@ -279,5 +279,4 @@ module.exports = class ModuleInstance extends InstanceBase {
 	}
 }
 
-// runEntrypoint(ModuleInstance, UpgradeScripts)
-module.exports.UpgradeScripts = UpgradeScripts
+export const UpgradeScripts = upgradeScripts
