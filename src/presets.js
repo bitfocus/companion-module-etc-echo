@@ -55,6 +55,44 @@ module.exports = function (self) {
 					},
 				},
 			],
+		},
+		activateSequence: {
+			name: 'Activate Sequence X',
+			type: 'simple',
+			style: {
+				text: 'Activate Sequence $(local:seqNum)',
+				size: 14,
+				color: combineRgb(255, 255, 255),
+				bgcolor: combineRgb(102, 0, 102),
+			},
+			steps: [
+				{
+					down: [{ actionId: 'set_activate_sequence', options: { seq: { isExpression: true, value: `$(local:seqNum)` } } }],
+					up: [],
+				},
+			],
+			localVariables: [
+				{ variableType: 'simple', variableName: 'seqNum', startupValue: 1}
+			],
+		},
+		deactivateSequence: {
+			name: 'Deactivate Sequence X',
+			type: 'simple',
+			style: {
+				text: 'Deactivate Sequence $(local:seqNum)',
+				size: 14,
+				color: combineRgb(255, 255, 255),
+				bgcolor: combineRgb(0, 0, 102),
+			},
+			steps: [
+				{
+					down: [{ actionId: 'set_deactivate_sequence', options: { seq: { isExpression: true, value: `$(local:seqNum)` } } }],
+					up: [],
+				},
+			],
+			localVariables: [
+				{ variableType: 'simple', variableName: 'seqNum', startupValue: 1}
+			],
 		}
 	}
 	
@@ -99,44 +137,6 @@ module.exports = function (self) {
 	// 	}
 	// }
 
-	// // Create buttons for sequence control
-	// for (let i = 1; i <= 4; i++) {
-	// 	presets[`activate_seq_${i}`] = {
-	// 		name: `Activate Sequence ${i}`,
-	// 		category: 'Activate Sequence',
-	// 		type: 'simple',
-	// 		style: {
-	// 			text: `Activate Sequence ${i}`,
-	// 			size: 14,
-	// 			color: combineRgb(255, 255, 255),
-	// 			bgcolor: combineRgb(102, 0, 102),
-	// 		},
-	// 		steps: [
-	// 			{
-	// 				down: [{ actionId: 'set_activate_sequence', options: { seq: i } }],
-	// 				up: [],
-	// 			},
-	// 		],
-	// 	}
-
-	// 	presets[`deactivate_seq_${i}`] = {
-	// 		name: `Deactivate Sequence ${i}`,
-	// 		category: 'Deactivate Sequence',
-	// 		type: 'simple',
-	// 		style: {
-	// 			text: `Deactivate Sequence ${i}`,
-	// 			size: 14,
-	// 			color: combineRgb(255, 255, 255),
-	// 			bgcolor: combineRgb(0, 0, 102),
-	// 		},
-	// 		steps: [
-	// 			{
-	// 				down: [{ actionId: 'set_deactivate_sequence', options: { seq: i } }],
-	// 				up: [],
-	// 			},
-	// 		],
-	// 	}
-	// }
 
 	const structure = [
 		{
@@ -176,6 +176,40 @@ module.exports = function (self) {
 						{ name: 'Preset 14', value: 14},
 						{ name: 'Preset 15', value: 15},
 						{ name: 'Preset 16', value: 16},
+					]
+				}
+			]
+		},
+		{
+			id: 'c',
+			name: 'Activate Sequence',
+			definitions: [
+				{
+					type: 'template',
+					presetId: 'activateSequence',
+					templateVariableName: 'seqNum',
+					templateValues: [
+						{ name: 'Sequence 1', value: 1},
+						{ name: 'Sequence 2', value: 2},
+						{ name: 'Sequence 3', value: 3},
+						{ name: 'Sequence 4', value: 4},
+					]
+				}
+			]
+		},
+		{
+			id: 'd',
+			name: 'Deactivate Sequence',
+			definitions: [
+				{
+					type: 'template',
+					presetId: 'deactivateSequence',
+					templateVariableName: 'seqNum',
+					templateValues: [
+						{ name: 'Sequence 1', value: 1},
+						{ name: 'Sequence 2', value: 2},
+						{ name: 'Sequence 3', value: 3},
+						{ name: 'Sequence 4', value: 4},
 					]
 				}
 			]
