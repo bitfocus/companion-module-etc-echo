@@ -12,7 +12,7 @@ export default class ModuleInstance extends InstanceBase {
 		super(internal)
 
 		this.EchoData = {
-			zonesInts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			zonesInts: Array(16).fill(0),
 			spaceOff: true,
 			activePreset: 0,
 			activeSequence: 0,
