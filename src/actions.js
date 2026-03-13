@@ -1,3 +1,8 @@
+import { createModuleLogger } from "@companion-module/base"
+
+// Make logger for UDP client
+const clientlogger = createModuleLogger('UDP Client')
+
 // Create dropdown for zone selection
 let ZoneNames = []
 for (let i = 1; i <= 16; i++) {
@@ -10,7 +15,7 @@ export function UpdateActions(self) {
 		const sendBuf = Buffer.from(msg, 'latin1')
 
 		if (self.udp !== undefined) {
-			self.log('debug', 'sending to ' + self.config.host + ':' + self.config.port + ': ' + sendBuf.toString())
+			clientlogger.debug('sending to ' + self.config.host + ':' + self.config.port + ': ' + sendBuf.toString())
 
 			self.udp.send(sendBuf, 0, sendBuf.length, self.config.port, self.config.host)
 		}
