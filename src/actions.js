@@ -3,12 +3,6 @@ import { createModuleLogger } from "@companion-module/base"
 // Make logger for UDP client
 const clientlogger = createModuleLogger('UDP Client')
 
-// Create dropdown for zone selection
-let ZoneNames = []
-for (let i = 1; i <= 16; i++) {
-	ZoneNames[i-1] = { id: i, label: `Zone ${i}` }
-}
-
 export function UpdateActions(self) {
 	const sendUDP = async (msg) => {
 		// Format and send UDP message to server
@@ -108,8 +102,8 @@ export function UpdateActions(self) {
 					id: 'zone',
 					type: 'dropdown',
 					label: 'Zone Number',
-					choices: ZoneNames,
-					default: ZoneNames[0].id,
+					choices: self.EchoData.ZoneNames,
+					default: self.EchoData.ZoneNames[0].id,
 				},
 				{
 					id: 'int',

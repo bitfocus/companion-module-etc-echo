@@ -6,20 +6,16 @@ import { UpdateFeedbacks } from './src/feedbacks.js'
 import { UpdateVariableDefinitions } from './src/variables.js'
 import { UpdatePresetDefinitions } from './src/presets.js'
 import { createUDPServer } from './src/udp/server.js'
+import { EchoInstance } from './src/Echo.js'
 
 export default class ModuleInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
-
-		this.EchoData = {
-			zonesInts: Array(16).fill(0),
-			spaceOff: true,
-			activePreset: 0,
-			activeSequence: 0,
-		}
 	}
 
 	async init(config) {
+		this.EchoData = new EchoInstance()
+
 		// The following runs when the module is opened for the first time or when the config is changed
 		this.config = config
 

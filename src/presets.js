@@ -159,24 +159,7 @@ export function UpdatePresetDefinitions(self) {
 					type: 'template',
 					presetId: 'activatePreset',
 					templateVariableName: 'presetNumber',
-					templateValues: [
-						{ name: 'Preset 1', value: 1},
-						{ name: 'Preset 2', value: 2},
-						{ name: 'Preset 3', value: 3},
-						{ name: 'Preset 4', value: 4},
-						{ name: 'Preset 5', value: 5},
-						{ name: 'Preset 6', value: 6},
-						{ name: 'Preset 7', value: 7},
-						{ name: 'Preset 8', value: 8},
-						{ name: 'Preset 9', value: 9},
-						{ name: 'Preset 10', value: 10},
-						{ name: 'Preset 11', value: 11},
-						{ name: 'Preset 12', value: 12},
-						{ name: 'Preset 13', value: 13},
-						{ name: 'Preset 14', value: 14},
-						{ name: 'Preset 15', value: 15},
-						{ name: 'Preset 16', value: 16},
-					]
+					templateValues: self.EchoData.generatePresetArray('Preset', 16)
 				}
 			]
 		},
@@ -188,12 +171,7 @@ export function UpdatePresetDefinitions(self) {
 					type: 'template',
 					presetId: 'activateSequence',
 					templateVariableName: 'seqNum',
-					templateValues: [
-						{ name: 'Sequence 1', value: 1},
-						{ name: 'Sequence 2', value: 2},
-						{ name: 'Sequence 3', value: 3},
-						{ name: 'Sequence 4', value: 4},
-					]
+					templateValues: self.EchoData.generatePresetArray('Sequence', 4)
 				}
 			]
 		},
@@ -205,12 +183,7 @@ export function UpdatePresetDefinitions(self) {
 					type: 'template',
 					presetId: 'deactivateSequence',
 					templateVariableName: 'seqNum',
-					templateValues: [
-						{ name: 'Sequence 1', value: 1},
-						{ name: 'Sequence 2', value: 2},
-						{ name: 'Sequence 3', value: 3},
-						{ name: 'Sequence 4', value: 4},
-					]
+					templateValues: self.EchoData.generatePresetArray('Sequence', 4)
 				}
 			]
 		}
