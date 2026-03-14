@@ -12,6 +12,14 @@ export async function UpdateFeedbacks(self) {
 			},
 			options: [
 				{
+					id: 'space',
+					type: 'number',
+					label: 'Space Number',
+					default: 1,
+					min: 1,
+					max: self.config.spaces,
+				},
+				{
 					id: 'preset',
 					type: 'number',
 					label: 'Preset',
@@ -21,20 +29,29 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.preset == self.EchoData.activePreset
+				return feedback.options.preset == self.EchoData.activePreset[feedback.options.space - 1]
 			},
 		},
 		SpaceOff: {
 			name: 'Space Off',
 			type: 'boolean',
-			description: 'If space is off, change style of the button',
+			// description: 'If space is off, change style of the button',
 			defaultStyle: {
 				bgcolor: combineRgb(204, 0, 0),
 				color: combineRgb(255, 255, 255),
 			},
-			options: [],
-			callback: () => {
-				return self.EchoData.spaceOff
+			options: [
+				{
+					id: 'space',
+					type: 'number',
+					label: 'Space Number',
+					default: 1,
+					min: 1,
+					max: self.config.spaces,
+				},
+			],
+			callback: (feedback) => {
+				return self.EchoData.spaceOff[feedback.options.space - 1]
 			},
 		},
 		CheckInt: {
@@ -47,12 +64,19 @@ export async function UpdateFeedbacks(self) {
 			},
 			options: [
 				{
-					id: 'zone',
+					id: 'space',
 					type: 'number',
-					label: 'Zone',
+					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: 16,
+					max: self.config.spaces,
+				},
+				{
+					id: 'zone',
+					type: 'dropdown',
+					label: 'Zone Number',
+					choices: self.EchoData.ZoneNames,
+					default: self.EchoData.ZoneNames[0].id,
 				},
 				{
 					id: 'int',
@@ -64,7 +88,7 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.int == self.EchoData.zonesInts[feedback.options.zone - 1]
+				return feedback.options.int == self.EchoData.zonesInts[feedback.options.space - 1][feedback.options.zone - 1]
 			},
 		},
 	})

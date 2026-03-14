@@ -14,7 +14,7 @@ export default class ModuleInstance extends InstanceBase {
 	}
 
 	async init(config) {
-		this.EchoData = new EchoInstance()
+		this.EchoData = new EchoInstance(1) // Init with single space when user first loads module
 
 		// The following runs when the module is opened for the first time or when the config is changed
 		this.config = config
@@ -48,6 +48,11 @@ export default class ModuleInstance extends InstanceBase {
 		}
 
 		this.config = config
+
+		if (this.EchoData) {
+			delete this.EchoData
+		}
+		this.EchoData = new EchoInstance(this.config.spaces)
 
 		createUDPServer(this)
 	}
