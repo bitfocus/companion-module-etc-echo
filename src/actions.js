@@ -1,19 +1,18 @@
-module.exports = function (self) {
+import { createModuleLogger } from "@companion-module/base"
+
+// Make logger for UDP client
+const clientlogger = createModuleLogger('UDP Client')
+
+export function UpdateActions(self) {
 	const sendUDP = async (msg) => {
 		// Format and send UDP message to server
 		const sendBuf = Buffer.from(msg, 'latin1')
 
 		if (self.udp !== undefined) {
-			self.log('debug', 'sending to ' + self.config.host + ':' + self.config.port + ': ' + sendBuf.toString())
+			clientlogger.debug('sending to ' + self.config.host + ':' + self.config.port + ': ' + sendBuf.toString())
 
 			self.udp.send(sendBuf, 0, sendBuf.length, self.config.port, self.config.host)
 		}
-	}
-
-	// Create dropdown for zone selection
-	this.ZoneNames = []
-	for (let i = 1; i <= 16; i++) {
-		this.ZoneNames[i-1] = { id: i, label: `Zone ${i}` }
 	}
 
 	self.setActionDefinitions({
@@ -103,8 +102,8 @@ module.exports = function (self) {
 					id: 'zone',
 					type: 'dropdown',
 					label: 'Zone Number',
-					choices: this.ZoneNames,
-					default: this.ZoneNames[0].id,
+					choices: self.EchoData.ZoneNames,
+					default: self.EchoData.ZoneNames[0].id,
 				},
 				{
 					id: 'int',
