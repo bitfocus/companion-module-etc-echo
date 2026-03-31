@@ -1,8 +1,5 @@
 import dgram from 'node:dgram'
-import { InstanceStatus, createModuleLogger } from '@companion-module/base'
-
-// Make logger for UDP server
-const udplogger = createModuleLogger('UDP Server')
+import { InstanceStatus } from '@companion-module/base'
 
 export function createUDPServer(self) {
 	self.updateStatus(InstanceStatus.Connecting)
@@ -11,12 +8,12 @@ export function createUDPServer(self) {
 		self.udp = dgram.createSocket({ type: 'udp4', reuseAddr: true })
 		self.udp.bind({ port: self.config.serverport, address: self.config.selfIP }, () => {
 			self.updateStatus(InstanceStatus.Ok)
-			udplogger.info('Listening for UDP packets on ' + self.config.serverport)
+			self.log('info', 'Listening for UDP packets on ' + self.config.serverport)
 		})
 
 		self.udp.on('error', (err) => {
 			self.updateStatus(InstanceStatus.ConnectionFailure, err.message)
-			udplogger.error('Network error: ' + err.message)
+			self.log('error', 'Network error: ' + err.message)
 
 			self.udp.close()
 		})
@@ -35,7 +32,7 @@ export function createUDPServer(self) {
 				case /E>pst act:/.test(dataResponse):
 					// Expected data response: E>pst act: <space> <active preset>
 					// If active preset == 0, no preset is applied
-					udplogger.info('Preset data recieved')
+					self.log('info', 'Preset data recieved')
 					let pstData = dataResponse.slice(11).split(', ')
 					self.EchoData.activePreset[spaceNum - 1] = pstData[1].replace(/(\r\n|\n|\r)/gm, '')
 
@@ -50,7 +47,7 @@ export function createUDPServer(self) {
 				case /E>space off:/.test(dataResponse):
 					// Expected data response: E>space off: <space> <truthy/falsy> (1 == truthy)
 					// Currently ignoring space data... assuming only using with one space
-					udplogger.info('Space off data recieved')
+					self.log('info', 'Space off data recieved')
 					let offData = dataResponse.slice(13).split(', ')
 					self.EchoData.spaceOff[spaceNum - 1] = offData[1].replace(/(\r\n|\n|\r)/gm, '') === '1' ? true : false
 
@@ -63,7 +60,7 @@ export function createUDPServer(self) {
 					self.checkFeedbacks('CheckInt', 'SpaceOff', 'ActivePreset')
 					break
 				case /E>seq act:/.test(dataResponse):
-					udplogger.info('Sequence data recieved')
+					self.log('info', 'Sequence data recieved')
 					let seqData = dataResponse.slice(11).split(', ')
 					self.EchoData.activeSequence[spaceNum - 1] = seqData[1].replace(/(\r\n|\n|\r)/gm, '')
 
@@ -72,11 +69,11 @@ export function createUDPServer(self) {
 					})
 					break
 				case /E>lok:/.test(dataResponse):
-					udplogger.info('Sync data recieved')
+					self.log('info', 'Sync data recieved')
 					break
 				case /E>zone int:/.test(dataResponse):
 					// Zone intensity data
-					udplogger.info('Zone intensity data recieved')
+					self.log('info', 'Zone intensity data recieved')
 					let zoneData = dataResponse.split('E>zone int: ')
 					zoneData.shift() // First value in array should be blank
 					zoneData.forEach((zone) => {
@@ -108,7 +105,7 @@ export function createUDPServer(self) {
 					self.checkFeedbacks('CheckInt', 'SpaceOff', 'ActivePreset')
 					break
 				default:
-					udplogger.info('Unexpected UDP data received')
+					self.log('info', 'Unexpected UDP data received')
 					break
 			}
 		})

@@ -1,16 +1,10 @@
-import { createModuleLogger } from '@companion-module/base'
-
-// Make logger for UDP client
-const clientlogger = createModuleLogger('UDP Client')
-
 export function UpdateActions(self) {
 	const sendUDP = async (msg) => {
 		// Format and send UDP message to server
 		const sendBuf = Buffer.from(msg, 'latin1')
 
 		if (self.udp !== undefined) {
-			clientlogger.debug('sending to ' + self.config.host + ':' + self.config.port + ': ' + sendBuf.toString())
-
+			self.log('debug','sending to ' + self.config.host + ':' + self.config.port + ': ' + sendBuf.toString())
 			self.udp.send(sendBuf, 0, sendBuf.length, self.config.port, self.config.host)
 		}
 	}
