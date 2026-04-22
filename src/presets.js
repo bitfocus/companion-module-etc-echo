@@ -24,7 +24,7 @@ export function UpdatePresetDefinitions(self) {
 		],
 		steps: [
 			{
-				down: [{ actionId: 'set_off', options: { fade_time: self.config.fadetime } }],
+				down: [{ actionId: 'set_off', options: { space: 1, fade_time: self.config.fadetime } }],
 				up: [],
 			},
 		],
@@ -44,7 +44,7 @@ export function UpdatePresetDefinitions(self) {
 			},
 			steps: [
 				{
-					down: [{ actionId: 'set_preset', options: { pst: i, fade_time: self.config.fadetime } }],
+					down: [{ actionId: 'set_preset', options: { space: 1, pst: i, fade_time: self.config.fadetime } }],
 					up: [],
 				},
 			],
@@ -63,41 +63,39 @@ export function UpdatePresetDefinitions(self) {
 
 	// Create buttons for zone intensity control
 	let zoneButtonInts = [0, 25, 50, 75, 100]
-	for (let i = 1; i <= 16; i++) {
-		// For each zone, create five buttons, ranging from 0% to 100% intensity, and split each zone into its own category
-		for (const z of zoneButtonInts) {
-			presets[`zone_${i}_${z * 2.55}`] = {
-				name: `Set Zone ${i} to ${z}%`,
-				category: `${z}% Intensity`,
-				type: 'button',
-				style: {
-					text: `Set Zone ${i} to ${z}%`,
-					size: 14,
-					color: combineRgb(255, 255, 255),
-					bgcolor: combineRgb(153, 76, 0),
-				},
-				steps: [
-					{
-						down: [
-							{
-								actionId: 'set_zone_int',
-								options: { space: 1, zone: i, int: Math.ceil(z * 2.55), fade_time: self.config.fadetime },
-							},
-						],
-						up: [],
-					},
-				],
-				feedbacks: [
-					{
-						feedbackId: 'CheckInt',
-						options: { zone: i, int: Math.ceil(z * 2.55) },
-						style: {
-							bgcolor: combineRgb(255, 120, 0),
-							color: combineRgb(0, 0, 0),
+	// Create five buttons, ranging from 0% to 100% intensity
+	for (const z of zoneButtonInts) {
+		presets[`zone_starter_${z * 2.55}`] = {
+			name: `Set Zone 1 to ${z}%`,
+			category: 'Intensity Starters',
+			type: 'button',
+			style: {
+				text: `Zone 1\n ${z}%`,
+				size: 14,
+				color: combineRgb(255, 255, 255),
+				bgcolor: combineRgb(153, 76, 0),
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'set_zone_int',
+							options: { space: 1, zone: i, int: Math.ceil(z * 2.55), fade_time: self.config.fadetime },
 						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [
+				{
+					feedbackId: 'CheckInt',
+					options: { space: 1, zone: i, int: Math.ceil(z * 2.55) },
+					style: {
+						bgcolor: combineRgb(255, 120, 0),
+						color: combineRgb(0, 0, 0),
 					},
-				],
-			}
+				},
+			],
 		}
 	}
 
@@ -115,7 +113,7 @@ export function UpdatePresetDefinitions(self) {
 			},
 			steps: [
 				{
-					down: [{ actionId: 'set_activate_sequence', options: { seq: i } }],
+					down: [{ actionId: 'set_activate_sequence', options: { space: 1, seq: i } }],
 					up: [],
 				},
 			],
@@ -133,7 +131,7 @@ export function UpdatePresetDefinitions(self) {
 			},
 			steps: [
 				{
-					down: [{ actionId: 'set_deactivate_sequence', options: { seq: i } }],
+					down: [{ actionId: 'set_deactivate_sequence', options: { space: 1, seq: i } }],
 					up: [],
 				},
 			],
