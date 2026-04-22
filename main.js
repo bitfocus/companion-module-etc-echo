@@ -52,7 +52,7 @@ class ModuleInstance extends InstanceBase {
 		if (this.EchoData) {
 			delete this.EchoData
 		}
-		this.EchoData = new EchoInstance(this.config.spaces)
+		this.EchoData = new EchoInstance()
 
 		createUDPServer(this)
 	}

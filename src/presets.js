@@ -81,7 +81,7 @@ export function UpdatePresetDefinitions(self) {
 						down: [
 							{
 								actionId: 'set_zone_int',
-								options: { zone: i, int: Math.ceil(z * 2.55), fade_time: self.config.fadetime },
+								options: { space: 1, zone: i, int: Math.ceil(z * 2.55), fade_time: self.config.fadetime },
 							},
 						],
 						up: [],

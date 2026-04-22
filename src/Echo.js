@@ -1,6 +1,5 @@
 export class EchoInstance {
-	constructor(numSpaces) {
-		this.numSpaces = numSpaces
+	constructor() {
 		this.zonesInts = []
 		this.spaceOff = []
 		this.activePreset = []
@@ -24,7 +23,7 @@ export class EchoInstance {
 		}
 
 		// Fill arrays with 0s per number of spaces
-		for (let i = 1; i <= this.numSpaces; i++) {
+		for (let i = 1; i <= 16; i++) {
 			this.zonesInts[i - 1] = Array(16).fill(0)
 			this.activePreset[i - 1] = Array(1).fill(0)
 			this.activeSequence[i - 1] = Array(1).fill(0)

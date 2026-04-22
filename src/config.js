@@ -15,16 +15,6 @@ for (const n of Object.keys(nets)) {
 
 export const configFields = [
 	{
-		type: 'static-text',
-		id: 'info',
-		width: 12,
-		label: 'Information',
-		value:
-			'This module is configured to only control one Echo "Space" at a time, ' +
-			'due to the sheer number of parameters required to track all 16 available ' +
-			'spaces. The ability to receive feedbacks from multiple modules in parallel does not currently work.',
-	},
-	{
 		type: 'textinput',
 		id: 'host',
 		label: 'Target IP',
@@ -59,15 +49,6 @@ export const configFields = [
 		default: '4703',
 		width: 6,
 		regex: Regex.PORT,
-		required: true,
-	},
-	{
-		type: 'textinput',
-		id: 'spaces',
-		label: 'Echo Spaces Used',
-		default: '1',
-		width: 6,
-		regex: Regex.NUMBER,
 		required: true,
 	},
 	{
