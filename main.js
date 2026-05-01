@@ -1,4 +1,4 @@
-import { InstanceBase, InstanceStatus } from '@companion-module/base'
+import { InstanceBase, InstanceStatus, runEntrypoint } from '@companion-module/base'
 import { configFields } from './src/config.js'
 import { upgradeScripts } from './src/upgrades.js'
 import { UpdateActions } from './src/actions.js'
@@ -8,13 +8,13 @@ import { UpdatePresetDefinitions } from './src/presets.js'
 import { createUDPServer } from './src/udp/server.js'
 import { EchoInstance } from './src/Echo.js'
 
-export default class ModuleInstance extends InstanceBase {
+class ModuleInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 	}
 
 	async init(config) {
-		this.EchoData = new EchoInstance()
+		this.EchoData = new EchoInstance(1) // Init with single space when user first loads module
 
 		// The following runs when the module is opened for the first time or when the config is changed
 		this.config = config
@@ -49,6 +49,11 @@ export default class ModuleInstance extends InstanceBase {
 
 		this.config = config
 
+		if (this.EchoData) {
+			delete this.EchoData
+		}
+		this.EchoData = new EchoInstance()
+
 		createUDPServer(this)
 	}
 
@@ -74,4 +79,4 @@ export default class ModuleInstance extends InstanceBase {
 	}
 }
 
-export const UpgradeScripts = upgradeScripts
+runEntrypoint(ModuleInstance, upgradeScripts)
