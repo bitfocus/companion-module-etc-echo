@@ -89,7 +89,7 @@ export function UpdatePresetDefinitions(self) {
 			feedbacks: [
 				{
 					feedbackId: 'CheckInt',
-					options: { space: 1, zone: i, int: Math.ceil(z * 2.55) },
+					options: { space: 1, zone: 1, int: Math.ceil(z * 2.55) },
 					style: {
 						bgcolor: combineRgb(255, 120, 0),
 						color: combineRgb(0, 0, 0),
