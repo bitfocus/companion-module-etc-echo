@@ -32,9 +32,9 @@ export class UDPServer extends EventEmitter {
 		this.emit('status', 'connecting')
 
 		this.udp = dgram.createSocket({ type: 'udp4', reuseAddr: true })
-		this.udp.bind({ port: this.config.serverport, address: self.config.selfIP }, () => {
+		this.udp.bind({ port: this.config.serverport, address: this.config.selfIP }, () => {
 			this.emit('status', 'ok')
-			serverLogger.info('Listening for UDP packets on ' + self.config.serverport)
+			serverLogger.info('Listening for UDP packets on ' + this.config.serverport)
 		})
 
 		// Register emitter listeners
@@ -43,7 +43,7 @@ export class UDPServer extends EventEmitter {
 		})
 
 		this.udp.on('status_change', (status, message) => {
-			self.updateStatus(status, message) // needs conversion
+			this.emit('status', 'ok', message)
 		})
 
 		this.udp.on('error', (err) => {
@@ -70,9 +70,9 @@ export class UDPServer extends EventEmitter {
 		}
 
 		// Format and send UDP message to server
-		const sendBuf = Buffer.from(`${REQUEST_PREFIX}${msg}${EOL[self.config.EOL]}`, 'latin1')
-		sendLogger.debug(`sending ${sendBuf.toString()} to ${self.config.host}:${self.config.port}`)
-		self.udp.send(sendBuf, 0, sendBuf.length, self.config.port, self.config.host)
+		const sendBuf = Buffer.from(`${REQUEST_PREFIX}${msg}${EOL[this.config.EOL]}`, 'latin1')
+		sendLogger.debug(`sending ${sendBuf.toString()} to ${this.config.host}:${this.config.port}`)
+		this.udp.send(sendBuf, 0, sendBuf.length, this.config.port, this.config.host)
 	}
 
 	parse(dataResponse) {

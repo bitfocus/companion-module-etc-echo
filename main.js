@@ -66,7 +66,7 @@ export default class ModuleInstance extends InstanceBase {
 			delete this.echoData
 		}
 		this.echoData = new EchoInstance()
-		this.server.connect(self)
+		this.server.connect()
 	}
 
 	buildVariables(field, space) {
