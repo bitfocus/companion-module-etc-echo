@@ -29,7 +29,7 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.preset == self.EchoData.activePreset[feedback.options.space - 1]
+				return feedback.options.preset == self.echoData.spaces.get(feedback.options.space)?.preset
 			},
 		},
 		SpaceOff: {
@@ -51,7 +51,7 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return self.EchoData.spaceOff[feedback.options.space - 1]
+				return self.echoData.spaces.get(feedback.options.space)?.off
 			},
 		},
 		CheckInt: {
@@ -75,8 +75,8 @@ export async function UpdateFeedbacks(self) {
 					id: 'zone',
 					type: 'dropdown',
 					label: 'Zone Number',
-					choices: self.EchoData.ZoneNames,
-					default: self.EchoData.ZoneNames[0].id,
+					choices: self.echoData.ZoneNames,
+					default: self.echoData.ZoneNames[0].id,
 				},
 				{
 					id: 'int',
@@ -88,7 +88,7 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.int == self.EchoData.zonesInts[feedback.options.space - 1][feedback.options.zone - 1]
+				return feedback.options.int == self.echoData.spaces.get(feedback.options.space)?.zones.get(feedback.options.zone)
 			},
 		},
 	})
