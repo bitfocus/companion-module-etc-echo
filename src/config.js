@@ -13,6 +13,12 @@ for (const n of Object.keys(nets)) {
 	}
 }
 
+const EOLOptions = [
+	{id: 'CR', label: `CR - '\\r'`},
+	{id: 'LF', label: `LF - '\\n'`},
+	{id: 'CRLF', label: `CRLF - '\\r\\n'`},
+]
+
 export const configFields = [
 	{
 		type: 'textinput',
@@ -50,6 +56,15 @@ export const configFields = [
 		width: 6,
 		regex: Regex.PORT,
 		required: true,
+	},
+	{
+		type: 'dropdown',
+		id: 'eol',
+		label: 'EOL',
+		choices: EOLOptions,
+		default: EOLOptions[0].id,
+		width: 6,
+		required: true
 	},
 	{
 		type: 'textinput',
