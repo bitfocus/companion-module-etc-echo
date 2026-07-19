@@ -1,20 +1,37 @@
-import { InstanceBase, InstanceStatus, runEntrypoint } from '@companion-module/base'
+import { InstanceBase, InstanceStatus } from '@companion-module/base'
 import { configFields } from './src/config.js'
 import { upgradeScripts } from './src/upgrades.js'
 import { UpdateActions } from './src/actions.js'
 import { UpdateFeedbacks } from './src/feedbacks.js'
 import { UpdateVariableDefinitions } from './src/variables.js'
 import { UpdatePresetDefinitions } from './src/presets.js'
-import { createUDPServer } from './src/udp/server.js'
-import { EchoInstance } from './src/Echo.js'
+import { UDPServer } from './src/Echo/server.js'
+import { EchoInstance } from './src/Echo/state.js'
 
-class ModuleInstance extends InstanceBase {
+const statusMap = {
+	connecting: InstanceStatus.Connecting,
+	ok: InstanceStatus.Ok,
+	bad_config: InstanceStatus.BadConfig,
+	connection_failure: InstanceStatus.ConnectionFailure,
+}
+
+export default class ModuleInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 	}
 
 	async init(config) {
-		this.EchoData = new EchoInstance(1) // Init with single space when user first loads module
+		this.echoData = new EchoInstance()
+		this.server = new UDPServer(config, this.echoData)
+
+		this.server.on('status', (status, msg) => {
+			this.updateStatus(statusMap[status], msg)
+		})
+
+		this.echoData.on('changed', (field) => {
+			this.checkFeedbacks('CheckInt', 'SpaceOff', 'ActivePreset')  // TODO: scope to specific feedback check
+			this.setVariableValues(this.buildVariables(field, space))
+		})
 
 		// The following runs when the module is opened for the first time or when the config is changed
 		this.config = config
@@ -31,12 +48,8 @@ class ModuleInstance extends InstanceBase {
 
 	// When module gets deleted or deactivated
 	async destroy() {
-		if (this.udp) {
-			this.udp.close()
-			delete this.udp
-		} else {
-			this.updateStatus(InstanceStatus.Disconnected)
-		}
+		this.server.destroy()
+		this.updateStatus(InstanceStatus.Disconnected)
 
 		this.log('debug', 'destroy')
 	}
@@ -49,12 +62,27 @@ class ModuleInstance extends InstanceBase {
 
 		this.config = config
 
-		if (this.EchoData) {
-			delete this.EchoData
+		if (this.echoData) {
+			delete this.echoData
 		}
-		this.EchoData = new EchoInstance()
+		this.echoData = new EchoInstance()
+		this.server.connect(self)
+	}
 
-		createUDPServer(this)
+	buildVariables(field, space) {
+		const state = this.echoData.spaces.get(space)
+		switch (field) {
+			case 'activePreset':
+				return { [`space${space}_preset`]: state.preset }
+			case 'spaceOff':
+				return { [`space${space}_off`]: state.off }
+			case 'activeSequence':
+				return { [`space${space}_sequence`]: state.sequence }
+			case 'zonesInts': 
+				return { [`space${space}_zones`]: Array.from(state.zones.values()) }
+			default:
+				return {}
+		}
 	}
 
 	// Return config fields for web config
@@ -79,4 +107,4 @@ class ModuleInstance extends InstanceBase {
 	}
 }
 
-runEntrypoint(ModuleInstance, upgradeScripts)
+export const UpgradeScripts = upgradeScripts
