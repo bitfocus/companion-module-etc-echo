@@ -1,12 +1,21 @@
 import { combineRgb } from '@companion-module/base'
 
+function getSimplePresetsArray(prefix, numPresets) {
+	let array = []
+
+	for (let i = 1; i <= numPresets; i++) {
+		array.push(prefix + i)
+	}
+
+	return array
+}
+
 export function UpdatePresetDefinitions(self) {
-	const presets = {}
+	const presets = []
 
 	presets[`preset_off`] = {
 		name: 'Space Off',
-		category: 'Presets',
-		type: 'button',
+		type: 'simple',
 		style: {
 			text: 'Space Off',
 			size: 18,
@@ -34,8 +43,7 @@ export function UpdatePresetDefinitions(self) {
 	for (let i = 1; i <= 16; i++) {
 		presets[`preset_${i}`] = {
 			name: `Preset ${i}`,
-			category: 'Presets',
-			type: 'button',
+			type: 'simple',
 			style: {
 				text: `Preset ${i}`,
 				size: 18,
@@ -62,13 +70,12 @@ export function UpdatePresetDefinitions(self) {
 	}
 
 	// Create buttons for zone intensity control
-	let zoneButtonInts = [0, 25, 50, 75, 100]
+	const zoneButtonInts = [0, 25, 50, 75, 100]
 	// Create five buttons, ranging from 0% to 100% intensity
 	for (const z of zoneButtonInts) {
-		presets[`zone_starter_${z * 2.55}`] = {
+		presets[`zone_starter_${z}`] = {
 			name: `Set Zone 1 to ${z}%`,
-			category: 'Intensity Starters',
-			type: 'button',
+			type: 'simple',
 			style: {
 				text: `Zone 1\n ${z}%`,
 				size: 14,
@@ -103,11 +110,10 @@ export function UpdatePresetDefinitions(self) {
 	for (let i = 1; i <= 4; i++) {
 		presets[`activate_seq_${i}`] = {
 			name: `Activate Sequence ${i}`,
-			category: 'Activate Sequence',
-			type: 'button',
+			type: 'simple',
 			style: {
 				text: `Activate Sequence ${i}`,
-				size: 14,
+				size: 10,
 				color: combineRgb(255, 255, 255),
 				bgcolor: combineRgb(102, 0, 102),
 			},
@@ -117,15 +123,15 @@ export function UpdatePresetDefinitions(self) {
 					up: [],
 				},
 			],
+			feedbacks: [],
 		}
 
 		presets[`deactivate_seq_${i}`] = {
 			name: `Deactivate Sequence ${i}`,
-			category: 'Deactivate Sequence',
-			type: 'button',
+			type: 'simple',
 			style: {
 				text: `Deactivate Sequence ${i}`,
-				size: 14,
+				size: 10,
 				color: combineRgb(255, 255, 255),
 				bgcolor: combineRgb(0, 0, 102),
 			},
@@ -135,8 +141,62 @@ export function UpdatePresetDefinitions(self) {
 					up: [],
 				},
 			],
+			feedbacks: [],
 		}
 	}
 
-	self.setPresetDefinitions(presets)
+	const structure = []
+
+	structure.push(
+		{
+			id: 'presets',
+			name: 'Space Presets',
+			definitions: [
+				{
+					id: 'off',
+					name: 'Off',
+					type: 'simple',
+					presets: ['preset_off'],
+				},
+				{
+					id: 'presets',
+					name: 'Presets',
+					type: 'simple',
+					presets: getSimplePresetsArray('preset_', 16),
+				},
+			],
+		},
+		{
+			id: 'intStarters',
+			name: 'Intensity Starters',
+			definitions: [
+				{
+					id: 'intStarters',
+					// name: 'Intensity Starters',
+					type: 'simple',
+					presets: ['zone_starter_0', 'zone_starter_25', 'zone_starter_50', 'zone_starter_75', 'zone_starter_100'],
+				},
+			],
+		},
+		{
+			id: 'sequence',
+			name: 'Sequence Controls',
+			definitions: [
+				{
+					id: 'seq_act',
+					name: 'Activate Sequence',
+					type: 'simple',
+					presets: getSimplePresetsArray('activate_seq_', 4),
+				},
+				{
+					id: 'seq_dact',
+					name: 'Deactivate Sequence',
+					type: 'simple',
+					presets: getSimplePresetsArray('deactivate_seq_', 4),
+				},
+			],
+		},
+	)
+
+	self.setPresetDefinitions(structure, presets)
 }
