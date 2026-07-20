@@ -5,7 +5,7 @@ export async function UpdateFeedbacks(self) {
 		ActivePreset: {
 			name: 'Active Preset',
 			type: 'boolean',
-			description: 'If certain preset is active, change style of the button',
+			description: 'Reacts when a specific preset has been recalled',
 			defaultStyle: {
 				bgcolor: combineRgb(0, 204, 0),
 				color: combineRgb(0, 0, 0),
@@ -35,7 +35,7 @@ export async function UpdateFeedbacks(self) {
 		SpaceOff: {
 			name: 'Space Off',
 			type: 'boolean',
-			// description: 'If space is off, change style of the button',
+			description: 'Reacts when a specific space is off',
 			defaultStyle: {
 				bgcolor: combineRgb(204, 0, 0),
 				color: combineRgb(255, 255, 255),
@@ -57,7 +57,7 @@ export async function UpdateFeedbacks(self) {
 		CheckInt: {
 			name: 'Check Intensity',
 			type: 'boolean',
-			description: 'If space is at certain intensity, change style of the button',
+			description: 'Reacts when a zone is a specific intensity',
 			defaultStyle: {
 				bgcolor: combineRgb(255, 120, 0),
 				color: combineRgb(0, 0, 0),
