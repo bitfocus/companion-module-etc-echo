@@ -5,7 +5,7 @@ export async function UpdateFeedbacks(self) {
 		ActivePreset: {
 			name: 'Active Preset',
 			type: 'boolean',
-			description: 'If certain preset is active, change style of the button',
+			description: 'Reacts when a specific preset has been recalled',
 			defaultStyle: {
 				bgcolor: combineRgb(0, 204, 0),
 				color: combineRgb(0, 0, 0),
@@ -29,13 +29,13 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.preset == self.EchoData.activePreset[feedback.options.space - 1]
+				return feedback.options.preset == self.echoData.spaces.get(feedback.options.space)?.preset
 			},
 		},
 		SpaceOff: {
 			name: 'Space Off',
 			type: 'boolean',
-			// description: 'If space is off, change style of the button',
+			description: 'Reacts when a specific space is off',
 			defaultStyle: {
 				bgcolor: combineRgb(204, 0, 0),
 				color: combineRgb(255, 255, 255),
@@ -51,13 +51,13 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return self.EchoData.spaceOff[feedback.options.space - 1]
+				return self.echoData.spaces.get(feedback.options.space)?.off
 			},
 		},
 		CheckInt: {
 			name: 'Check Intensity',
 			type: 'boolean',
-			description: 'If space is at certain intensity, change style of the button',
+			description: 'Reacts when a zone is a specific intensity',
 			defaultStyle: {
 				bgcolor: combineRgb(255, 120, 0),
 				color: combineRgb(0, 0, 0),
@@ -75,8 +75,8 @@ export async function UpdateFeedbacks(self) {
 					id: 'zone',
 					type: 'dropdown',
 					label: 'Zone Number',
-					choices: self.EchoData.ZoneNames,
-					default: self.EchoData.ZoneNames[0].id,
+					choices: self.echoData.ZoneNames,
+					default: self.echoData.ZoneNames[0].id,
 				},
 				{
 					id: 'int',
@@ -88,7 +88,7 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.int == self.EchoData.zonesInts[feedback.options.space - 1][feedback.options.zone - 1]
+				return feedback.options.int == self.echoData.spaces.get(feedback.options.space)?.zones.get(feedback.options.zone)
 			},
 		},
 	})
