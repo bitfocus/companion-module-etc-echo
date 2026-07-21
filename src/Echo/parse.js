@@ -44,5 +44,5 @@ export function parseData(dataResponse, echoData) {
         return
     }
 
-    parseLogger.warning('Unexpected UDP data received')
+    parseLogger.warn('Unexpected UDP data received')
 }
