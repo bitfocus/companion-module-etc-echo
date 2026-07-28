@@ -1,5 +1,4 @@
-import dgram from 'node:dgram'
-import { InstanceStatus, createModuleLogger } from '@companion-module/base'
+import { UDPHelper, InstanceStatus, createModuleLogger } from '@companion-module/base'
 import { EventEmitter } from 'node:events'
 import { parseData } from './parse.js'
 
@@ -8,7 +7,7 @@ const sendLogger = createModuleLogger('Send')
 const parseLogger = createModuleLogger('Parse')
 
 const REQUEST_PREFIX = "E$"
-const EOL = {
+const EOL_CHARACTER = {
 	CR: '\r',
 	LF: '\n',
 	CRLF: '\r\n'
@@ -31,11 +30,7 @@ export class UDPServer extends EventEmitter {
 
 		this.emit('status', 'connecting')
 
-		this.udp = dgram.createSocket({ type: 'udp4', reuseAddr: true })
-		this.udp.bind({ port: this.config.serverport, address: this.config.selfIP }, () => {
-			this.emit('status', 'ok')
-			serverLogger.info('Listening for UDP packets on ' + this.config.serverport)
-		})
+		this.udp = new UDPHelper(this.config.host, this.config.port)
 
 		// Register emitter listeners
 		this.udp.on('listening', () => {
@@ -53,7 +48,7 @@ export class UDPServer extends EventEmitter {
 		})
 
 		this.udp.on('message', (msg, dInfo) => {
-			parseData(msg.toString())
+			parse(msg.toString(), this.echoData)
 		})
 	}
 
@@ -70,8 +65,11 @@ export class UDPServer extends EventEmitter {
 		}
 
 		// Format and send UDP message to server
-		const sendBuf = Buffer.from(`${REQUEST_PREFIX}${msg}${EOL[this.config.EOL]}`, 'latin1')
+		console.log(this.config.EOL)
+		// const sendBuf = Buffer.from(`${REQUEST_PREFIX}${msg}${EOL_CHARACTER[this.config.EOL]}`, 'latin1')
+		const sendBuf = Buffer.from(`${REQUEST_PREFIX}${msg}\r`, 'latin1')
 		sendLogger.debug(`sending ${sendBuf.toString()} to ${this.config.host}:${this.config.port}`)
+		sendLogger.debug(`sending bytes: ${sendBuf.toString('hex')}`)
 		this.udp.send(sendBuf, 0, sendBuf.length, this.config.port, this.config.host)
 	}
 
