@@ -32,7 +32,7 @@ export function UpdateActions(self) {
 		],
 		callback: async (event) => {
 			const cmd =
-				'E$pst act: ' + event.options.space + ', ' + event.options.pst + ', ' + event.options.fade_time
+				'pst act: ' + event.options.space + ', ' + event.options.pst + ', ' + event.options.fade_time
 			await self.server.send(cmd)
 		},
 	}
@@ -47,7 +47,7 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 			{
 				id: 'fade_time',
@@ -59,7 +59,7 @@ export function UpdateActions(self) {
 			},
 		],
 		callback: async (event) => {
-			const cmd = 'E$off: ' + event.options.space + ', ' + event.options.fade_time
+			const cmd = 'off: ' + event.options.space + ', ' + event.options.fade_time
 			await self.server.send(cmd)
 		},
 	}
@@ -73,7 +73,7 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 			{
 				id: 'seq',
@@ -85,7 +85,7 @@ export function UpdateActions(self) {
 			},
 		],
 		callback: async (event) => {
-			const cmd = 'E$seq act: ' + event.options.space + ', ' + event.options.seq
+			const cmd = 'seq act: ' + event.options.space + ', ' + event.options.seq
 			await self.server.send(cmd)
 		},
 	}
@@ -99,7 +99,7 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 			{
 				id: 'seq',
@@ -111,7 +111,7 @@ export function UpdateActions(self) {
 			},
 		],
 		callback: async (event) => {
-			const cmd = 'E$seq dect: ' + event.options.space + ', ' + event.options.seq
+			const cmd = 'seq dect: ' + event.options.space + ', ' + event.options.seq
 			await self.server.send(cmd)
 		},
 	}
@@ -126,7 +126,7 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 			{
 				id: 'zone',
@@ -154,15 +154,7 @@ export function UpdateActions(self) {
 			},
 		],
 		callback: async (event) => {
-			const cmd =
-				'E$zone int: ' +
-				event.options.space +
-				', ' +
-				event.options.zone +
-				', ' +
-				event.options.int +
-				', ' +
-				event.options.fade_time
+			const cmd = `zone int: ${event.options.space}, ${event.options.zone}, ${event.options.int}, ${event.options.fade_time}`
 			await self.server.send(cmd)
 		},
 	}
@@ -176,11 +168,11 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 		],
 		callback: async (event) => {
-			const cmd = 'E$pst get: ' + event.options.space
+			const cmd = 'pst get: ' + event.options.space
 			await self.server.send(cmd)
 		},
 	},
@@ -194,11 +186,11 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 		],
 		callback: async (event) => {
-			const cmd = 'E$off get: ' + event.options.space
+			const cmd = 'off get: ' + event.options.space
 			await self.server.send(cmd)
 		},
 	},
@@ -212,11 +204,11 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 		],
 		callback: async (event) => {
-			const cmd = 'E$seq get: ' + event.options.space
+			const cmd = 'seq get: ' + event.options.space
 			await self.server.send(cmd)
 		},
 	}
@@ -231,7 +223,7 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 			{
 				id: 'getAll',
@@ -242,7 +234,7 @@ export function UpdateActions(self) {
 		],
 		callback: async (event) => {
 			const spaceValue = event.options.getAll ? 0 : event.options.space
-			const cmd = 'E$sync get: ' + spaceValue
+			const cmd = 'sync get: ' + spaceValue
 			await self.server.send(cmd)
 		},
 	}
@@ -257,11 +249,11 @@ export function UpdateActions(self) {
 				label: 'Space Number',
 				default: 1,
 				min: 1,
-				max: self.config.spaces,
+				max: 16,
 			},
 		],
 		callback: async (event) => {
-			const cmd = 'E$zone int get: ' + event.options.space
+			const cmd = 'zone int get: ' + event.options.space
 			await self.server.send(cmd)
 		},
 	}
