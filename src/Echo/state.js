@@ -1,4 +1,7 @@
 import { EventEmitter } from 'node:events'
+import { createModuleLogger } from '@companion-module/base'
+ 
+const stateLogger = createModuleLogger('State')
 
 export class EchoInstance extends EventEmitter {
 	constructor() {
@@ -41,23 +44,49 @@ export class EchoInstance extends EventEmitter {
 		}
 	}
 
+	#getSpaceOrWarn(space) {
+		const state = this.spaces.get(space)
+		if (!state) {
+			stateLogger.warn(`Ignoring update for unknown space ${space}`)
+			return undefined
+		}
+		return state
+	}
+
 	setActivePreset(space, value) {
-		this.spaces.get(space).preset = value
+		const state = this.#getSpaceOrWarn(space)
+		if (!state) return
+
+		state.preset = value
 		this.emit('changed', 'activePreset', space)
 	}
 
 	setSpaceOff(space, value) {
-		this.spaces.get(space).off = value
+		const state = this.#getSpaceOrWarn(space)
+		if (!state) return
+
+		state.off = value
 		this.emit('changed', 'spaceOff', space)
 	}
 
 	setActiveSequence(space, value) {
-		this.spaces.get(space).sequence = value
+		const state = this.#getSpaceOrWarn(space)
+		if (!state) return
+
+		state.sequence = value
 		this.emit('changed', 'activeSequence', space)
 	}
 
 	setZoneIntensity(space, zone, value) {
-		this.spaces.get(space).zones.set(zone, value)
+		const state = this.#getSpaceOrWarn(space)
+		if (!state) return
+
+		if (!state.zones.has(zone)) {
+			stateLogger.warn(`Ignoring update for unknown zone ${zone} in space ${space}`)
+			return
+		}
+
+		state.zones.set(zone, value)
 		this.emit('changed', 'zonesInts', space)
 	}
 }

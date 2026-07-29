@@ -34,7 +34,7 @@ export function parseData(dataResponse, echoData) {
         return
     }
 
-    const ZONE_INT = /E>zone int:\s*(\d+),\s*(\d+),\s*([^\r\n]+)/g
+    const ZONE_INT = /E>zone int:\s*(\d+),\s*(\d+),\s*([^\r\n]+?)(?=E>zone int:|\r|\n|$)/g
     const zoneMatches = [...dataResponse.matchAll(ZONE_INT)]
     if (zoneMatches.length > 0) {
         parseLogger.info('Zone intensity data received')
