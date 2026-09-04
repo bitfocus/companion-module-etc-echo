@@ -72,7 +72,7 @@ export class UDPServer extends EventEmitter {
 
 	send(msg) {
 		if (!this.udp) {
-			sendLogger.error('Not connected to ECHO server!')
+			sendLogger.error('Not connected to Echo server!')
 			return
 		}
 
