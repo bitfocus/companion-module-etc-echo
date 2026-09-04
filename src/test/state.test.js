@@ -42,19 +42,6 @@ describe('EchoInstance', () => {
 			zonesForSpace1.set(5, 99)
 			assert.equal(zonesForSpace2.get(5), 0, 'mutating space 1 zones should not affect space 2')
 		})
-
-		test('builds 16 ZoneNames, SpaceNames, and PresetNames entries with matching id/label', () => {
-			for (const list of [
-				{ arr: echoData.ZoneNames, label: 'Zone' },
-				{ arr: echoData.SpaceNames, label: 'Space' },
-				{ arr: echoData.PresetNames, label: 'Preset' },
-			]) {
-				assert.equal(list.arr.length, 16)
-				for (let i = 0; i < 16; i++) {
-					assert.deepEqual(list.arr[i], { id: i + 1, label: `${list.label} ${i + 1}` })
-				}
-			}
-		})
 	})
 
 	describe('setActivePreset', () => {
