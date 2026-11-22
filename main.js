@@ -5,8 +5,8 @@ import { UpdateActions } from './src/actions.js'
 import { UpdateFeedbacks } from './src/feedbacks.js'
 import { UpdateVariableDefinitions } from './src/variables.js'
 import { UpdatePresetDefinitions } from './src/presets.js'
-import { createUDPServer } from './src/udp/server.js'
-import { EchoInstance } from './src/Echo.js'
+import { createUDPServer } from './src/core/server.js'
+import { EchoInstance } from './src/core/state.js'
 
 class ModuleInstance extends InstanceBase {
 	constructor(internal) {
