@@ -3,7 +3,7 @@ import { getOff, getPreset, getZone } from './core/state'
 
 // TODO finish
 function raiseStateError() {
-	console.log("State error occured")
+	console.log('State error occured')
 }
 
 export async function UpdateFeedbacks(self) {
@@ -24,7 +24,7 @@ export async function UpdateFeedbacks(self) {
 					default: 1,
 					min: 1,
 					max: 16,
-					asInteger: true
+					asInteger: true,
 				},
 				{
 					id: 'preset',
@@ -33,7 +33,7 @@ export async function UpdateFeedbacks(self) {
 					default: 1,
 					min: 1,
 					max: 16,
-					asInteger: true
+					asInteger: true,
 				},
 			],
 			callback: (feedback) => {
@@ -57,17 +57,17 @@ export async function UpdateFeedbacks(self) {
 					default: 1,
 					min: 1,
 					max: 16,
-					asInteger: true
+					asInteger: true,
 				},
 			],
 			callback: (feedback) => {
 				const isOff = getOff(self.EchoData, feedback.options.space - 1)
 				if (isOff != 0 && isOff != 1) {
-					raiseStateError();
+					raiseStateError()
 					return
 				}
-				
-				return isOff ? 1 : 0;
+
+				return isOff ? 1 : 0
 			},
 		},
 		CheckInt: {
@@ -103,7 +103,7 @@ export async function UpdateFeedbacks(self) {
 					default: 255,
 					min: 0,
 					max: 255,
-					asInteger: true
+					asInteger: true,
 				},
 			],
 			callback: (feedback) => {

@@ -10,7 +10,7 @@ export function createEchoState() {
 		zones: new Uint8Array(16 * 16),
 		sequences: new Uint8Array(16 * 4),
 		presets: new Uint8Array(16),
-		isOff: new Uint8Array(16).fill(1)
+		isOff: new Uint8Array(16).fill(1),
 	}
 }
 
@@ -31,7 +31,7 @@ export function setZone(state, space, zone, int) {
 }
 
 export function getZone(state, space, zone) {
-	if (space < 0 || space > 15 || zone < 0 || zone > 15) { 
+	if (space < 0 || space > 15 || zone < 0 || zone > 15) {
 		alertBadParams()
 		return
 	}
@@ -40,12 +40,12 @@ export function getZone(state, space, zone) {
 }
 
 export function setSequence(state, space, seq, active) {
-	if (space < 0 || space > 15 || seq < 0 || seq > 3) { 
+	if (space < 0 || space > 15 || seq < 0 || seq > 3) {
 		alertBadParams()
 		return
 	}
 
-	if (active != 1 && active != 0){
+	if (active != 1 && active != 0) {
 		alertBadParams()
 		return
 	}
@@ -54,7 +54,7 @@ export function setSequence(state, space, seq, active) {
 }
 
 export function getSequence(state, space, seq) {
-	if (space < 0 || space > 15 || seq < 0 || seq > 3) { 
+	if (space < 0 || space > 15 || seq < 0 || seq > 3) {
 		alertBadParams()
 		return
 	}
