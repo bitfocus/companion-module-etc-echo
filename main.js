@@ -6,7 +6,7 @@ import { UpdateFeedbacks } from './src/feedbacks.js'
 import { UpdateVariableDefinitions } from './src/variables.js'
 import { UpdatePresetDefinitions } from './src/presets.js'
 import { createUDPServer } from './src/core/server.js'
-import { EchoInstance } from './src/core/state.js'
+import { createEchoState } from './src/core/state.js'
 
 class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -14,8 +14,6 @@ class ModuleInstance extends InstanceBase {
 	}
 
 	async init(config) {
-		this.EchoData = new EchoInstance(1) // Init with single space when user first loads module
-
 		// The following runs when the module is opened for the first time or when the config is changed
 		this.config = config
 
@@ -49,10 +47,11 @@ class ModuleInstance extends InstanceBase {
 
 		this.config = config
 
+		// init state
 		if (this.EchoData) {
 			delete this.EchoData
 		}
-		this.EchoData = new EchoInstance()
+		this.EchoData = createEchoState()
 
 		createUDPServer(this)
 	}

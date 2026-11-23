@@ -1,45 +1,99 @@
-export class EchoInstance {
-	constructor() {
-		this.zonesInts = []
-		this.spaceOff = []
-		this.activePreset = []
-		this.activeSequence = []
+// export interface EchoState {
+// 	zones: Uint8Array;
+// 	sequences: Uint8Array;
+// 	presets: Uint8Array;
+// 	isOff: Uint8Array;
+// }
 
-		this.ZoneNames = []
-		this.SpaceNames = []
-		this.PresetNames = []
+export function createEchoState() {
+	return {
+		zones: new Uint8Array(16 * 16),
+		sequences: new Uint8Array(16 * 4),
+		presets: new Uint8Array(16),
+		isOff: new Uint8Array(16).fill(1)
+	}
+}
 
-		// Initialize class data
-		this.init()
+// TODO finish with better logging
+function alertBadParams() {
+	// log error
+	console.log('Invalid parameters sent to function...')
+	// alert user
+}
+
+export function setZone(state, space, zone, int) {
+	if (space < 0 || space > 15 || zone < 0 || zone > 15 || int < 0 || int > 255 || !Number.isInteger(int)) {
+		alertBadParams()
+		return
 	}
 
-	// Initialize class
-	init() {
-		// Create values for dropdowns
-		for (let i = 1; i <= 16; i++) {
-			this.ZoneNames[i - 1] = { id: i, label: `Zone ${i}` }
-			this.SpaceNames[i - 1] = { id: i, label: `Space ${i}` }
-			this.PresetNames[i - 1] = { id: i, label: `Preset ${i}` }
-		}
+	state.zones[(space << 4) + zone] = int
+}
 
-		// Fill arrays with 0s per number of spaces
-		for (let i = 1; i <= 16; i++) {
-			this.zonesInts[i - 1] = Array(16).fill(0)
-			this.activePreset[i - 1] = Array(1).fill(0)
-			this.activeSequence[i - 1] = Array(1).fill(0)
-			this.spaceOff[i - 1] = true
-		}
+export function getZone(state, space, zone) {
+	if (space < 0 || space > 15 || zone < 0 || zone > 15) { 
+		alertBadParams()
+		return
 	}
 
-	// Generate array of objects for Companion 2.0 API preset creation
-	generatePresetArray(typeName, num) {
-		let arrayTemp = []
-		for (let i = 1; i <= num; i++) {
-			arrayTemp[i - 1] = {
-				name: typeName + ' ' + i,
-				value: i,
-			}
-		}
-		return arrayTemp
+	return state.zones[(space << 4) + zone]
+}
+
+export function setSequence(state, space, seq, active) {
+	if (space < 0 || space > 15 || seq < 0 || seq > 3) { 
+		alertBadParams()
+		return
 	}
+
+	if (active != 1 && active != 0){
+		alertBadParams()
+		return
+	}
+
+	state.sequences[(space << 2) + seq] = active
+}
+
+export function getSequence(state, space, seq) {
+	if (space < 0 || space > 15 || seq < 0 || seq > 3) { 
+		alertBadParams()
+		return
+	}
+
+	return state.sequences[(space << 2) + seq]
+}
+
+export function setOff(state, space, offStatus) {
+	if (space < 0 || space > 15) {
+		alertBadParams()
+		return
+	}
+
+	state.isOff[space] = offStatus
+}
+
+export function getOff(state, space) {
+	if (space < 0 || space > 15) {
+		alertBadParams()
+		return
+	}
+
+	return state.isOff[space]
+}
+
+export function setPreset(state, space, preset) {
+	if (space < 0 || space > 15 || preset < -1 || preset > 15) {
+		alertBadParams()
+		return
+	}
+
+	state.presets[space] = preset
+}
+
+export function getPreset(state, space) {
+	if (space < 0 || space > 15) {
+		alertBadParams()
+		return
+	}
+
+	return state.presets[space]
 }

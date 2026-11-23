@@ -1,4 +1,10 @@
 import { combineRgb } from '@companion-module/base'
+import { getOff, getPreset, getZone } from './core/state'
+
+// TODO finish
+function raiseStateError() {
+	console.log("State error occured")
+}
 
 export async function UpdateFeedbacks(self) {
 	self.setFeedbackDefinitions({
@@ -31,7 +37,8 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.preset == self.EchoData.activePreset[feedback.options.space - 1]
+				const activePreset = getPreset(self.EchoData, feedback.options.space - 1)
+				return feedback.options.preset == activePreset
 			},
 		},
 		SpaceOff: {
@@ -54,13 +61,18 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return self.EchoData.spaceOff[feedback.options.space - 1]
+				const isOff = getOff(self.EchoData, feedback.options.space - 1)
+				if (isOff != 0 && isOff != 1) {
+					raiseStateError();
+					return
+				}
+				
+				return isOff ? 1 : 0;
 			},
 		},
 		CheckInt: {
-			name: 'Check Intensity',
+			name: 'Check Intensity of Zone',
 			type: 'boolean',
-			description: 'If space is at certain intensity, change style of the button',
 			defaultStyle: {
 				bgcolor: combineRgb(255, 120, 0),
 				color: combineRgb(0, 0, 0),
@@ -95,7 +107,8 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.int == self.EchoData.zonesInts[feedback.options.space - 1][feedback.options.zone - 1]
+				activeInt = getZone(self.EchoData, feedback.options.space - 1, feedback.options.zone - 1)
+				return feedback.options.int == activeInt
 			},
 		},
 	})
