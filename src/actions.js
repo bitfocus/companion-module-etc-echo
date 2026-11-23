@@ -20,7 +20,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 				{
 					id: 'pst',
@@ -55,7 +55,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 				{
 					id: 'fade_time',
@@ -80,7 +80,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 				{
 					id: 'seq',
@@ -105,7 +105,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 				{
 					id: 'seq',
@@ -131,7 +131,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 				{
 					id: 'zone',
@@ -181,7 +181,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 			],
 			callback: async (event) => {
@@ -198,7 +198,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 			],
 			callback: async (event) => {
@@ -215,7 +215,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 			],
 			callback: async (event) => {
@@ -233,7 +233,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 				{
 					id: 'getAll',
@@ -258,7 +258,7 @@ export function UpdateActions(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
 				},
 			],
 			callback: async (event) => {

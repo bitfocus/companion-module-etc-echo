@@ -69,7 +69,8 @@ export async function UpdateFeedbacks(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
+					asInteger: true,
 				},
 				{
 					id: 'zone',
