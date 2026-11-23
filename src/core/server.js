@@ -1,5 +1,9 @@
 import dgram from 'node:dgram'
 import { InstanceStatus } from '@companion-module/base'
+import { setOff, setPreset, setSequence, setZone } from './state'
+
+/* Parse int and shift to 0-based for state */
+const toIdx = (v) => Math.max(0, (parseInt(v, 10) || 1) - 1)
 
 export function createUDPServer(self) {
 	self.updateStatus(InstanceStatus.Connecting)
@@ -24,94 +28,40 @@ export function createUDPServer(self) {
 		})
 
 		// Call when data gets received
-		self.udp.on('message', (msg, dInfo) => {
-			let dataResponse = msg.toString()
-			let spaceNum = /(?=:\s(\d*))/.exec(dataResponse)[1]
+		self.udp.on('message', (msg) => {
+			const data = msg.toString()
+			let m
 
-			switch (true) {
-				case /E>pst act:/.test(dataResponse):
-					// Expected data response: E>pst act: <space> <active preset>
-					// If active preset == 0, no preset is applied
-					self.log('info', 'Preset data recieved')
-					let pstData = dataResponse.slice(11).split(', ')
-					self.EchoData.activePreset[spaceNum - 1] = pstData[1].replace(/(\r\n|\n|\r)/gm, '')
+			if (data.includes('E>zone int:')) {
+				for (const chunk of data.split('E>zone int: ').slice(1)) {
+					const [sp, zn, int] = chunk.split(',').map((s) => parseInt(s, 10))
+					if (!isNaN(sp)) {
+						setZone(self.EchoData, toIdx(sp), toIdx(zn), int & 0xFF)
+					}
+				}
 
-					// Update variables in Companion
-					self.setVariableValues({
-						activePreset: self.EchoData.activePreset,
-					})
-
-					// Update feedbacks
-					self.checkFeedbacks('CheckInt', 'SpaceOff', 'ActivePreset')
-					break
-				case /E>space off:/.test(dataResponse):
-					// Expected data response: E>space off: <space> <truthy/falsy> (1 == truthy)
-					// Currently ignoring space data... assuming only using with one space
-					self.log('info', 'Space off data recieved')
-					let offData = dataResponse.slice(13).split(', ')
-					self.EchoData.spaceOff[spaceNum - 1] = offData[1].replace(/(\r\n|\n|\r)/gm, '') === '1' ? true : false
-
-					// Update variables in Companion
-					self.setVariableValues({
-						spaceOff: self.EchoData.spaceOff,
-					})
-
-					// Update feedbacks
-					self.checkFeedbacks('CheckInt', 'SpaceOff', 'ActivePreset')
-					break
-				case /E>seq act:/.test(dataResponse):
-					self.log('info', 'Sequence data recieved')
-					let seqData = dataResponse.slice(11).split(', ')
-					self.EchoData.activeSequence[spaceNum - 1] = seqData[1].replace(/(\r\n|\n|\r)/gm, '')
-
-					self.setVariableValues({
-						activeSequence: self.EchoData.activeSequence,
-					})
-					break
-				case /E>lok:/.test(dataResponse):
-					self.log('info', 'Sync data recieved')
-					break
-				case /E>zone int:/.test(dataResponse):
-					// Zone intensity data
-					self.log('info', 'Zone intensity data recieved')
-					let zoneData = dataResponse.split('E>zone int: ')
-					zoneData.shift() // First value in array should be blank
-					zoneData.forEach((zone) => {
-						let zRes = zone.split(', ')
-						self.EchoData.zonesInts[spaceNum - 1][zRes[1] - 1] = zRes[2].replace(/(\r\n|\n|\r)/gm, '')
-					})
-
-					// Update variables in Companion
-					self.setVariableValues({
-						space1_zones: self.EchoData.zonesInts[0],
-						space2_zones: self.EchoData.zonesInts[1],
-						space3_zones: self.EchoData.zonesInts[2],
-						space4_zones: self.EchoData.zonesInts[3],
-						space5_zones: self.EchoData.zonesInts[4],
-						space6_zones: self.EchoData.zonesInts[5],
-						space7_zones: self.EchoData.zonesInts[6],
-						space8_zones: self.EchoData.zonesInts[7],
-						space9_zones: self.EchoData.zonesInts[8],
-						space10_zones: self.EchoData.zonesInts[9],
-						space11_zones: self.EchoData.zonesInts[10],
-						space12_zones: self.EchoData.zonesInts[11],
-						space13_zones: self.EchoData.zonesInts[12],
-						space14_zones: self.EchoData.zonesInts[13],
-						space15_zones: self.EchoData.zonesInts[14],
-						space16_zones: self.EchoData.zonesInts[15],
-					})
-
-					// Update feedbacks
-					self.checkFeedbacks('CheckInt', 'SpaceOff', 'ActivePreset')
-					break
-				default:
-					self.log('info', 'Unexpected UDP data received')
-					break
+				self.checkAllFeedbacks()
+				self.log('info', 'Zone intensity data received')
+				return
 			}
-		})
 
-		self.udp.on('status_change', (status, message) => {
-			self.updateStatus(status, message)
+			if ((m = data.match(/^E>pst act:\s*(\d+),\s*(.+?)\s*$/))) {
+				setPreset(self.EchoData, toIdx(m[1]), m[2].trim())
+				self.checkAllFeedbacks()
+				self.log('info', 'Preset data received')
+			} else if ((m = data.match(/^E>space off:\s*(\d+),\s*(\d)\s*$/))) {
+				setOff(self.EchoData, toIdx(m[1]), m[2] === '1' ? 1 : 0)
+				self.checkAllFeedbacks()
+				self.log('info', 'Space off data received')
+			} else if ((m = data.match(/^E>>seq act:\s*(\d+),\s*(\d+),\s*(\d+)\s*$/))) {
+				setSequence(self.EchoData, toIdx(m[1]), toIdx(m[2]), parseInt(m[3], 10))
+				self.checkAllFeedbacks()
+				self.log('info', 'Sequence data received')
+			} else if (data.startsWith('E>lok:')) {
+				self.log('info', 'Sync data received')
+			} else {
+				self.log('info', 'Unexpected UDP data received')
+			}
 		})
 	} else {
 		self.updateStatus(InstanceStatus.BadConfig)
