@@ -17,7 +17,8 @@ export async function UpdateFeedbacks(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'preset',
@@ -26,6 +27,7 @@ export async function UpdateFeedbacks(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 			],
 			callback: (feedback) => {
@@ -47,7 +49,8 @@ export async function UpdateFeedbacks(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
+					asInteger: true
 				},
 			],
 			callback: (feedback) => {
@@ -74,10 +77,12 @@ export async function UpdateFeedbacks(self) {
 				},
 				{
 					id: 'zone',
-					type: 'dropdown',
+					type: 'number',
 					label: 'Zone Number',
-					choices: self.EchoData.ZoneNames,
-					default: self.EchoData.ZoneNames[0].id,
+					default: 1,
+					min: 1,
+					max: 16,
+					asInteger: true,
 				},
 				{
 					id: 'int',
@@ -86,6 +91,7 @@ export async function UpdateFeedbacks(self) {
 					default: 255,
 					min: 0,
 					max: 255,
+					asInteger: true
 				},
 			],
 			callback: (feedback) => {
