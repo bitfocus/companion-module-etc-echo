@@ -21,6 +21,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'pst',
@@ -29,6 +30,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'fade_time',
@@ -56,6 +58,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'fade_time',
@@ -81,6 +84,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'seq',
@@ -89,6 +93,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 4,
+					asInteger: true
 				},
 			],
 			callback: async (event) => {
@@ -106,6 +111,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'seq',
@@ -114,6 +120,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 4,
+					asInteger: true
 				},
 			],
 			callback: async (event) => {
@@ -132,6 +139,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'zone',
@@ -140,6 +148,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'int',
@@ -148,6 +157,7 @@ export function UpdateActions(self) {
 					default: 255,
 					min: 0,
 					max: 255,
+					asInteger: true
 				},
 				{
 					id: 'fade_time',
@@ -234,6 +244,7 @@ export function UpdateActions(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true
 				},
 				{
 					id: 'getAll',
