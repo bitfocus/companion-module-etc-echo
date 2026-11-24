@@ -1,14 +1,18 @@
-import { combineRgb } from '@companion-module/base'
+import { getOff, getPreset, getZone } from './core/state.js'
+import { colors } from './core/colors.js'
+import { logger } from './core/logging.js'
+
+const log = logger('Feedbacks')
 
 export async function UpdateFeedbacks(self) {
 	self.setFeedbackDefinitions({
 		ActivePreset: {
 			name: 'Active Preset',
 			type: 'boolean',
-			description: 'If certain preset is active, change style of the button',
+			// description: 'If certain preset is active, change style of the button',
 			defaultStyle: {
-				bgcolor: combineRgb(0, 204, 0),
-				color: combineRgb(0, 0, 0),
+				bgcolor: colors.green,
+				color: colors.black,
 			},
 			options: [
 				{
@@ -17,7 +21,8 @@ export async function UpdateFeedbacks(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
+					asInteger: true,
 				},
 				{
 					id: 'preset',
@@ -26,10 +31,12 @@ export async function UpdateFeedbacks(self) {
 					default: 1,
 					min: 1,
 					max: 16,
+					asInteger: true,
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.preset == self.EchoData.activePreset[feedback.options.space - 1]
+				const activePreset = getPreset(self.EchoData, feedback.options.space - 1)
+				return feedback.options.preset == activePreset
 			},
 		},
 		SpaceOff: {
@@ -37,8 +44,8 @@ export async function UpdateFeedbacks(self) {
 			type: 'boolean',
 			// description: 'If space is off, change style of the button',
 			defaultStyle: {
-				bgcolor: combineRgb(204, 0, 0),
-				color: combineRgb(255, 255, 255),
+				bgcolor: colors.red,
+				color: colors.white,
 			},
 			options: [
 				{
@@ -47,20 +54,26 @@ export async function UpdateFeedbacks(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
+					asInteger: true,
 				},
 			],
 			callback: (feedback) => {
-				return self.EchoData.spaceOff[feedback.options.space - 1]
+				const isOff = getOff(self.EchoData, feedback.options.space - 1)
+				if (isOff != 0 && isOff != 1) {
+					log.warn('isOff not stored correctly. Please file issue on Github.')
+					return
+				}
+
+				return isOff ? 1 : 0
 			},
 		},
 		CheckInt: {
-			name: 'Check Intensity',
+			name: 'ZoneIntensity',
 			type: 'boolean',
-			description: 'If space is at certain intensity, change style of the button',
 			defaultStyle: {
-				bgcolor: combineRgb(255, 120, 0),
-				color: combineRgb(0, 0, 0),
+				bgcolor: colors.amber,
+				color: colors.black,
 			},
 			options: [
 				{
@@ -69,14 +82,17 @@ export async function UpdateFeedbacks(self) {
 					label: 'Space Number',
 					default: 1,
 					min: 1,
-					max: self.config.spaces,
+					max: 16,
+					asInteger: true,
 				},
 				{
 					id: 'zone',
-					type: 'dropdown',
+					type: 'number',
 					label: 'Zone Number',
-					choices: self.EchoData.ZoneNames,
-					default: self.EchoData.ZoneNames[0].id,
+					default: 1,
+					min: 1,
+					max: 16,
+					asInteger: true,
 				},
 				{
 					id: 'int',
@@ -85,10 +101,12 @@ export async function UpdateFeedbacks(self) {
 					default: 255,
 					min: 0,
 					max: 255,
+					asInteger: true,
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.int == self.EchoData.zonesInts[feedback.options.space - 1][feedback.options.zone - 1]
+				const activeInt = getZone(self.EchoData, feedback.options.space - 1, feedback.options.zone - 1)
+				return feedback.options.int == activeInt
 			},
 		},
 	})
