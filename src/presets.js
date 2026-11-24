@@ -1,4 +1,4 @@
-import { combineRgb } from '@companion-module/base'
+import { colors } from './core/colors.js'
 
 export function UpdatePresetDefinitions(self) {
 	const presets = {}
@@ -10,15 +10,15 @@ export function UpdatePresetDefinitions(self) {
 		style: {
 			text: 'Space Off',
 			size: 18,
-			color: combineRgb(255, 255, 255),
-			bgcolor: combineRgb(153, 0, 0),
+			color: colors.white,
+			bgcolor: colors.redText
 		},
 		feedbacks: [
 			{
 				feedbackId: 'SpaceOff',
 				style: {
-					bgcolor: combineRgb(204, 0, 0),
-					color: combineRgb(255, 255, 255),
+					bgcolor: colors.red,
+					color: colors.white,
 				},
 			},
 		],
@@ -39,8 +39,8 @@ export function UpdatePresetDefinitions(self) {
 			style: {
 				text: `Preset ${i}`,
 				size: 18,
-				color: combineRgb(255, 255, 255),
-				bgcolor: combineRgb(0, 153, 0),
+				color: colors.white,
+				bgcolor: colors.greenText,
 			},
 			steps: [
 				{
@@ -53,8 +53,8 @@ export function UpdatePresetDefinitions(self) {
 					feedbackId: 'ActivePreset',
 					options: { preset: i },
 					style: {
-						bgcolor: combineRgb(0, 204, 0),
-						color: combineRgb(255, 255, 255),
+						bgcolor: colors.green,
+						color: colors.white,
 					},
 				},
 			],
@@ -72,8 +72,8 @@ export function UpdatePresetDefinitions(self) {
 			style: {
 				text: `Zone 1\n ${z}%`,
 				size: 14,
-				color: combineRgb(255, 255, 255),
-				bgcolor: combineRgb(153, 76, 0),
+				color: colors.white,
+				bgcolor: colors.burntOrange,
 			},
 			steps: [
 				{
@@ -91,8 +91,8 @@ export function UpdatePresetDefinitions(self) {
 					feedbackId: 'CheckInt',
 					options: { space: 1, zone: 1, int: Math.ceil(z * 2.55) },
 					style: {
-						bgcolor: combineRgb(255, 120, 0),
-						color: combineRgb(0, 0, 0),
+						bgcolor: colors.amber,
+						color: colors.black,
 					},
 				},
 			],
@@ -108,8 +108,8 @@ export function UpdatePresetDefinitions(self) {
 			style: {
 				text: `Activate Sequence ${i}`,
 				size: 14,
-				color: combineRgb(255, 255, 255),
-				bgcolor: combineRgb(102, 0, 102),
+				color: colors.white,
+				bgcolor: colors.purple,
 			},
 			steps: [
 				{
@@ -126,8 +126,8 @@ export function UpdatePresetDefinitions(self) {
 			style: {
 				text: `Deactivate Sequence ${i}`,
 				size: 14,
-				color: combineRgb(255, 255, 255),
-				bgcolor: combineRgb(0, 0, 102),
+				color: colors.white,
+				bgcolor: colors.blue,
 			},
 			steps: [
 				{

@@ -1,5 +1,5 @@
-import { combineRgb } from '@companion-module/base'
-import { getOff, getPreset, getZone } from './core/state'
+import { getOff, getPreset, getZone } from './core/state.js'
+import { colors } from './core/colors.js'
 
 // TODO finish
 function raiseStateError() {
@@ -13,8 +13,8 @@ export async function UpdateFeedbacks(self) {
 			type: 'boolean',
 			// description: 'If certain preset is active, change style of the button',
 			defaultStyle: {
-				bgcolor: combineRgb(0, 204, 0),
-				color: combineRgb(0, 0, 0),
+				bgcolor: colors.green,
+				color: colors.black,
 			},
 			options: [
 				{
@@ -46,8 +46,8 @@ export async function UpdateFeedbacks(self) {
 			type: 'boolean',
 			// description: 'If space is off, change style of the button',
 			defaultStyle: {
-				bgcolor: combineRgb(204, 0, 0),
-				color: combineRgb(255, 255, 255),
+				bgcolor: colors.red,
+				color: colors.white,
 			},
 			options: [
 				{
@@ -74,8 +74,8 @@ export async function UpdateFeedbacks(self) {
 			name: 'ZoneIntensity',
 			type: 'boolean',
 			defaultStyle: {
-				bgcolor: combineRgb(255, 120, 0),
-				color: combineRgb(0, 0, 0),
+				bgcolor: colors.amber,
+				color: colors.black,
 			},
 			options: [
 				{
@@ -107,7 +107,7 @@ export async function UpdateFeedbacks(self) {
 				},
 			],
 			callback: (feedback) => {
-				activeInt = getZone(self.EchoData, feedback.options.space - 1, feedback.options.zone - 1)
+				const activeInt = getZone(self.EchoData, feedback.options.space - 1, feedback.options.zone - 1)
 				return feedback.options.int == activeInt
 			},
 		},

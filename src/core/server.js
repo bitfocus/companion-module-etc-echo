@@ -1,6 +1,6 @@
 import dgram from 'node:dgram'
 import { InstanceStatus } from '@companion-module/base'
-import { setOff, setPreset, setSequence, setZone } from './state'
+import { setOff, setPreset, setSequence, setZone } from './state.js'
 
 /* Parse int and shift to 0-based for state */
 const toIdx = (v) => Math.max(0, (parseInt(v, 10) || 1) - 1)
