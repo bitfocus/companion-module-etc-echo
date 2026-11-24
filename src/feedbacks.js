@@ -1,10 +1,8 @@
 import { getOff, getPreset, getZone } from './core/state.js'
 import { colors } from './core/colors.js'
+import { logger } from './core/logging.js'
 
-// TODO finish
-function raiseStateError() {
-	console.log('State error occured')
-}
+const log = logger('Feedbacks')
 
 export async function UpdateFeedbacks(self) {
 	self.setFeedbackDefinitions({
@@ -63,7 +61,7 @@ export async function UpdateFeedbacks(self) {
 			callback: (feedback) => {
 				const isOff = getOff(self.EchoData, feedback.options.space - 1)
 				if (isOff != 0 && isOff != 1) {
-					raiseStateError()
+					log.warn('isOff not stored correctly. Please file issue on Github.')
 					return
 				}
 

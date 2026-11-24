@@ -7,6 +7,7 @@ import { UpdateVariableDefinitions } from './src/variables.js'
 import { UpdatePresetDefinitions } from './src/presets.js'
 import { createUDPServer } from './src/core/server.js'
 import { createEchoState } from './src/core/state.js'
+import { connect, disconnect } from './src/core/logging.js'
 
 class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -36,16 +37,20 @@ class ModuleInstance extends InstanceBase {
 			this.updateStatus(InstanceStatus.Disconnected)
 		}
 
+		disconnect()
+
 		this.log('debug', 'destroy')
 	}
 
 	async configUpdated(config) {
-		if (this.udp) {
-			this.udp.close()
-			delete this.udp
-		}
+		await this.destroy()
 
 		this.config = config
+
+		// Logging without event emits or overusage of self
+		connect((level, message) => {
+			this.log(level, message)
+		})
 
 		// init state
 		if (this.EchoData) {

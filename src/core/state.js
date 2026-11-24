@@ -5,6 +5,10 @@
 // 	isOff: Uint8Array;
 // }
 
+import { logger } from "./logging.js"
+
+const log = logger('State')
+
 export function createEchoState() {
 	return {
 		zones: new Uint8Array(16 * 16),
@@ -14,16 +18,9 @@ export function createEchoState() {
 	}
 }
 
-// TODO finish with better logging
-function alertBadParams() {
-	// log error
-	console.log('Invalid parameters sent to function...')
-	// alert user
-}
-
 export function setZone(state, space, zone, int) {
 	if (space < 0 || space > 15 || zone < 0 || zone > 15 || int < 0 || int > 255 || !Number.isInteger(int)) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
@@ -32,7 +29,7 @@ export function setZone(state, space, zone, int) {
 
 export function getZone(state, space, zone) {
 	if (space < 0 || space > 15 || zone < 0 || zone > 15) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
@@ -41,12 +38,12 @@ export function getZone(state, space, zone) {
 
 export function setSequence(state, space, seq, active) {
 	if (space < 0 || space > 15 || seq < 0 || seq > 3) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
 	if (active != 1 && active != 0) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
@@ -55,7 +52,7 @@ export function setSequence(state, space, seq, active) {
 
 export function getSequence(state, space, seq) {
 	if (space < 0 || space > 15 || seq < 0 || seq > 3) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
@@ -64,7 +61,7 @@ export function getSequence(state, space, seq) {
 
 export function setOff(state, space, offStatus) {
 	if (space < 0 || space > 15) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
@@ -73,7 +70,7 @@ export function setOff(state, space, offStatus) {
 
 export function getOff(state, space) {
 	if (space < 0 || space > 15) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
@@ -82,7 +79,7 @@ export function getOff(state, space) {
 
 export function setPreset(state, space, preset) {
 	if (space < 0 || space > 15 || preset < -1 || preset > 15) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
@@ -91,7 +88,7 @@ export function setPreset(state, space, preset) {
 
 export function getPreset(state, space) {
 	if (space < 0 || space > 15) {
-		alertBadParams()
+		log.warn('Invalid parameters sent to state store...')
 		return
 	}
 
