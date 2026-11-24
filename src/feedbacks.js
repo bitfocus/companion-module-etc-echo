@@ -11,7 +11,7 @@ export async function UpdateFeedbacks(self) {
 		ActivePreset: {
 			name: 'Active Preset',
 			type: 'boolean',
-			description: 'If certain preset is active, change style of the button',
+			// description: 'If certain preset is active, change style of the button',
 			defaultStyle: {
 				bgcolor: combineRgb(0, 204, 0),
 				color: combineRgb(0, 0, 0),
@@ -71,7 +71,7 @@ export async function UpdateFeedbacks(self) {
 			},
 		},
 		CheckInt: {
-			name: 'Check Intensity of Zone',
+			name: 'ZoneIntensity',
 			type: 'boolean',
 			defaultStyle: {
 				bgcolor: combineRgb(255, 120, 0),

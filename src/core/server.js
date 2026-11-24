@@ -53,7 +53,7 @@ export function createUDPServer(self) {
 				setOff(self.EchoData, toIdx(m[1]), m[2] === '1' ? 1 : 0)
 				self.checkAllFeedbacks()
 				self.log('info', 'Space off data received')
-			} else if ((m = data.match(/^E>>seq act:\s*(\d+),\s*(\d+),\s*(\d+)\s*$/))) {
+			} else if ((m = data.match(/^E>seq act:\s*(\d+),\s*(\d+),\s*(\d+)\s*$/))) {
 				setSequence(self.EchoData, toIdx(m[1]), toIdx(m[2]), parseInt(m[3], 10))
 				self.checkAllFeedbacks()
 				self.log('info', 'Sequence data received')
